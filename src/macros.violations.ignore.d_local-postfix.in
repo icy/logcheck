@@ -1,0 +1,18 @@
+#: LEAD       = ^\w{3} [ :[:digit:]]{11} @HOSTNAME@
+#: HOSTNAME   = [-_[:alnum:]]+
+#: PID        = [[:digit:]]{1,5}
+#: PROC_SMTPD = postfix/smtpd\[@PID@\]
+#: QUEUE_ID   = (NOQUEUE|[[:upper:][:digit:]]+)
+#: DN         = [-_.[:alnum:]]+
+#: FQDN       = @DN@\.[[:alpha:]]{2,4}
+#: IPADDR     = ([[:digit:]]{1,3}\.){3}[[:digit:]]{1,3}
+#: STATUS     = [45][[:digit:]]{2}
+#: EXT_STATUS = @STATUS@ ([[:digit:]]+\.){2}[[:digit:]]+
+#: EMAIL      = <[-_.+[:alnum:]]+@@DN@>
+#: PROTO      = proto=E?SMTP
+#: FROM       = from=@EMAIL@
+#: TO         = to=@EMAIL@
+#: HELO       = helo=<@DN@>
+#: EOL        = $
+
+@LEAD@ @PROC_SMTPD@: @QUEUE_ID@: reject: RCPT from @FQDN@\[@IPADDR@\]: @EXT_STATUS@ @EMAIL@: Relay access denied; @FROM@ @TO@ @PROTO@ @HELO@@EOL@
